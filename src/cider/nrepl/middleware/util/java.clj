@@ -5,7 +5,7 @@
             [clojure.java.io :as io]
             [clojure.reflect :as r]
             [clojure.string :as str]
-            [dynapath.util :as dp])
+            #_ [dynapath.util :as dp])
   (:import (clojure.lang IPersistentMap)
            (clojure.reflect Constructor Field JavaReflector Method)))
 
@@ -31,7 +31,7 @@
   "Similar to the deprecated `clojure.core/add-classpath`, adds the URL to the
   classpath and returns it if successful, or nil otherwise."
   [url]
-  (let [classloader (->> (.. Thread currentThread getContextClassLoader)
+  #_ (let [classloader (->> (.. Thread currentThread getContextClassLoader)
                          (iterate #(.getParent ^ClassLoader %))
                          (take-while identity)
                          (filter dp/addable-classpath?)
