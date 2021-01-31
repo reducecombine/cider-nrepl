@@ -5,14 +5,7 @@
 ;; Keep in sync with VERSION-FORM in project.clj
 (defn- version
   []
-  (let [v (-> (io/resource "cider/cider-nrepl/project.clj")
-              slurp
-              read-string
-              (nth 2))]
-    (assert (string? v)
-            (str "Something went wrong, version is not a string: "
-                 v))
-    v))
+  "0.99.9")
 
 (defn middleware
   [{:keys [dependencies exclusions] :as project}]
