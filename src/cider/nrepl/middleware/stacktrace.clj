@@ -195,7 +195,7 @@
   [path]
   (let [dir (str (System/getProperty "user.dir")
                  (System/getProperty "file.separator"))]
-    (str/replace-first path dir "")))
+    (some-> path (str/replace-first dir ""))))
 
 (defn extract-location
   "If the cause is a compiler exception, extract the useful location information
