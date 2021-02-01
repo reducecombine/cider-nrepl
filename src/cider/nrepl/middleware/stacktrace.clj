@@ -211,8 +211,10 @@
                                path->url
                                u/transform-value)
              :path (relative-path file)
-             :line (Integer/parseInt line)
-             :column (Integer/parseInt column)))
+             :line (or (some-> line Integer/parseInt)
+                       0)
+             :column (or (some-> column Integer/parseInt)
+                         0)))
     cause))
 
 ;; CLJS REPLs use :repl-env to store huge amounts of analyzer/compiler state
