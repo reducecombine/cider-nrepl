@@ -98,15 +98,27 @@
   [m]
   (let [ns (ns-name (get m :ns (:testing-ns @current-report)))
         v  (last test/*testing-vars*)
-        update! (partial swap! current-report update-in)]
-    (condp get (:type m)
+        update! (partial swap! current-report update-in)
+        m-type (:type m)
+        mc? (= m-type :matcher-combinators/mismatch)]
+    (condp get m-type
       #{:begin-test-ns}     (do (update! [:testing-ns] (constantly ns))
                                 (update! [:summary :ns] inc))
       #{:begin-test-var}    (do (update! [:summary :var] inc))
-      #{:pass :fail :error} (do (update! [:summary :test] inc)
-                                (update! [:summary (:type m)] inc)
+      #{:pass :fail :error :matcher-combinators/mismatch}
+      (do (update! [:summary :test] inc)
+          (update! [:summary (case m-type
+                               :matcher-combinators/mismatch :fail
+                               m-type)]
+                   inc)
                                 (update! [:results ns (:name (meta v))]
-                                         (fnil conj []) (test-result ns v m))
+                   (fnil conj []) (test-result ns v
+                                               (cond-> m
+                                                 mc?
+                                                 (assoc :type   :fail
+                                                        :actual (:markup m))
+                                                 mc?
+                                                 (dissoc :markup))))
                                 (update! [:gen-input] (constantly nil))) ; reset
 
       #{:com.gfredericks.test.chuck.clojure-test/shrunk}
