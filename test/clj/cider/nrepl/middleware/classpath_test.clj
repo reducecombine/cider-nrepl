@@ -29,4 +29,5 @@
 
 (deftest works
   (testing "The presence of the cider-nrepl library does not affect the clojure.java.classpath library, particularly on JDK11"
-    (is (seq (clojure.java.classpath/classpath-directories)))))
+    (is (seq (clojure.java.classpath/classpath-directories))
+        (pr-str (.getContextClassLoader (Thread/currentThread))))))

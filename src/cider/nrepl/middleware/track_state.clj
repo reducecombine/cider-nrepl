@@ -150,7 +150,7 @@
     (assoc project-ns-map clojure-core clojure-core-map)))
 
 (def jar-namespaces
-  (->> (cp/classpath)
+  (->> (cp/system-classpath)
        (filter misc/jar-file?)
        (map #(JarFile. (io/as-file %)))
        (mapcat ns-find/find-namespaces-in-jarfile)
