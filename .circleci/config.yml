@@ -121,7 +121,7 @@ jobs:
           steps:
             - run:
                 name: Running tests with inlined deps
-                command: make test smoketest
+                command: lein test :only cider.nrepl.middleware.classpath-test/works
 
 ######################################################################
 #
